@@ -1,0 +1,26 @@
+// Set the assets path for GOV.UK Frontend
+$govuk-assets-path: "/_content/GovUk.Frontend.AspNetCore/";
+
+// Import GOV.UK Frontend - this includes all styles, components, and utilities
+@import "govuk-frontend/dist/govuk/all";
+
+// Import DfE Frontend components (after GOV.UK Frontend)
+@import "dfe-frontend/packages/dfefrontend";
+
+// Override GOV.UK width container to use DfE Frontend's width
+// DfE Frontend sets this via its own styles
+// Per: https://design.education.gov.uk/design-system/dfe-frontend/install
+.govuk-width-container {
+  @include govuk-width-container;
+}
+
+// DfE rebrand logo styling
+// Per: https://design.education.gov.uk/design-system/govuk-rebrand/dfe-header-rebrand
+.govuk-header__link .govuk-header__logotype {
+  height: 30px;
+}
+
+.govuk-header__link:focus .govuk-header__logotype {
+  content: url(/assets/images/department-for-education_black.png);
+  height: 30px;
+}
