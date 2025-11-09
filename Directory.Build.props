@@ -1,0 +1,31 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- Common target framework for all projects -->
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <!-- Code quality and analysis -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisMode>Recommended</AnalysisMode>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+
+    <!-- Common metadata -->
+    <Authors>Department for Education</Authors>
+    <Company>Department for Education</Company>
+    <Product>DfE CMS</Product>
+    <Copyright>Crown Copyright (c) 2025</Copyright>
+
+    <!-- Deterministic builds for reproducibility -->
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <!-- Common package references for test projects -->
+  <ItemGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+</Project>

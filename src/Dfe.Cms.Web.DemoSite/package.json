@@ -1,0 +1,25 @@
+{
+  "name": "dfe.cms.web.public",
+  "version": "1.0.0",
+  "description": "DfE CMS Public-Facing Application",
+  "scripts": {
+    "build:css": "sass --load-path=node_modules src/assets/sass/site.scss wwwroot/css/site.css --style compressed",
+    "build:js": "node scripts/build-js.js",
+    "build": "npm run build:css && npm run build:js && npm run copy-assets",
+    "copy-assets": "node scripts/copy-assets.js",
+    "clean": "node scripts/clean.js",
+    "watch:css": "npm run build:css -- --watch",
+    "watch": "npm run watch:css"
+  },
+  "keywords": ["DfE", "CMS", "GOV.UK"],
+  "author": "Department for Education",
+  "license": "MIT",
+  "dependencies": {
+    "dfe-frontend": "^2.0.1"
+  },
+  "devDependencies": {
+    "sass": "^1.80.6",
+    "esbuild": "^0.25.12"
+  },
+  "type": "module"
+}
