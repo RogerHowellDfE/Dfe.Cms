@@ -1,3 +1,4 @@
+using Dfe.Cms.Web.Admin.Middleware;
 using GovUk.Frontend.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,9 @@ builder.Services.AddGovUkFrontend(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+// Security headers middleware must be first to ensure headers are set for all responses
+app.UseSecurityHeaders();
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
