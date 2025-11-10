@@ -4,6 +4,7 @@
     <ProjectReference Include="..\Dfe.Cms.Domain\Dfe.Cms.Domain.csproj" />
     <ProjectReference Include="..\Dfe.Cms.Application\Dfe.Cms.Application.csproj" />
     <ProjectReference Include="..\Dfe.Cms.Infrastructure\Dfe.Cms.Infrastructure.csproj" />
+    <ProjectReference Include="..\Dfe.Cms.ServiceDefaults\Dfe.Cms.ServiceDefaults.csproj" />
   </ItemGroup>
 
   <ItemGroup>

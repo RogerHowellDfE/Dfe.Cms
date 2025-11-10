@@ -3,6 +3,9 @@ using GovUk.Frontend.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add Aspire service defaults (telemetry, health checks, service discovery)
+builder.AddServiceDefaults();
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 
@@ -34,6 +37,9 @@ app.UseAuthorization();
 app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
+
+// Map Aspire default endpoints (health checks, etc.)
+app.MapDefaultEndpoints();
 
 app.Run();
 
