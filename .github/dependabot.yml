@@ -1,0 +1,37 @@
+version: 2
+updates:
+  # .NET dependencies
+  - package-ecosystem: "nuget"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "dependencies"
+      - "nuget"
+
+  # NPM dependencies for Admin
+  - package-ecosystem: "npm"
+    directory: "/src/Dfe.Cms.Web.Admin"
+    schedule:
+      interval: "daily"
+    labels:
+      - "dependencies"
+      - "npm"
+
+  # NPM dependencies for DemoSite
+  - package-ecosystem: "npm"
+    directory: "/src/Dfe.Cms.Web.DemoSite"
+    schedule:
+      interval: "daily"
+    labels:
+      - "dependencies"
+      - "npm"
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "dependencies"
+      - "github-actions"
