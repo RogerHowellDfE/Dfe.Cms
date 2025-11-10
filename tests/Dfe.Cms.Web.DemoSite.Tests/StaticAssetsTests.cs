@@ -110,4 +110,78 @@ public class StaticAssetsTests : IClassFixture<PublicWebApplicationFactory>
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
+
+    [Theory]
+    [InlineData("/assets/rebrand/images/govuk-icon-180.png")]
+    [InlineData("/assets/rebrand/images/govuk-icon-192.png")]
+    [InlineData("/assets/rebrand/images/govuk-icon-512.png")]
+    [InlineData("/assets/rebrand/images/govuk-icon-mask.svg")]
+    [InlineData("/assets/rebrand/images/favicon.ico")]
+    [InlineData("/assets/rebrand/images/favicon.svg")]
+    public async Task GovUkRebrandAssets_WhenRequested_ReturnsHttp200(string assetPath)
+    {
+        var response = await _client.GetAsync(assetPath);
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+    }
+
+    [Fact]
+    public async Task Homepage_WhenLoaded_AllLinkedResourcesAreAccessible()
+    {
+        // Get the homepage
+        var pageResponse = await _client.GetAsync("/");
+        pageResponse.EnsureSuccessStatusCode();
+
+        var html = await pageResponse.Content.ReadAsStringAsync();
+
+        // Extract CSS links
+        var cssUrls = ExtractUrls(html, "<link[^>]+href=[\"']([^\"']+\\.css[^\"']*)[\"']");
+
+        // Extract JS src attributes
+        var jsUrls = ExtractUrls(html, "<script[^>]+src=[\"']([^\"']+\\.js[^\"']*)[\"']");
+
+        // Extract img src attributes
+        var imgUrls = ExtractUrls(html, "<img[^>]+src=[\"']([^\"']+)[\"']");
+
+        var allResourceUrls = cssUrls.Concat(jsUrls).Concat(imgUrls).Distinct().ToList();
+
+        Assert.NotEmpty(allResourceUrls); // Ensure we found some resources to test
+
+        // Verify all resources are accessible
+        var failedResources = new List<string>();
+        foreach (var url in allResourceUrls)
+        {
+            // Skip external URLs
+            if (url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+                url.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            var resourceResponse = await _client.GetAsync(url);
+            if (resourceResponse.StatusCode != HttpStatusCode.OK)
+            {
+                failedResources.Add($"{url} returned {resourceResponse.StatusCode}");
+            }
+        }
+
+        Assert.Empty(failedResources);
+    }
+
+    private static List<string> ExtractUrls(string html, string pattern)
+    {
+        var urls = new List<string>();
+        var matches = System.Text.RegularExpressions.Regex.Matches(html, pattern,
+            System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+        foreach (System.Text.RegularExpressions.Match match in matches)
+        {
+            if (match.Groups.Count > 1)
+            {
+                urls.Add(match.Groups[1].Value);
+            }
+        }
+
+        return urls;
+    }
 }

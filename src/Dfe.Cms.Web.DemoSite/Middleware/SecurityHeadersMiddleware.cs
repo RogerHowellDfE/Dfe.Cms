@@ -1,3 +1,5 @@
+using GovUk.Frontend.AspNetCore;
+
 namespace Dfe.Cms.Web.DemoSite.Middleware;
 
 /// <summary>
@@ -11,6 +13,7 @@ namespace Dfe.Cms.Web.DemoSite.Middleware;
 public class SecurityHeadersMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly string _govUkFrontendCspHashes;
 
     /// <summary>
     /// Headers to remove to prevent technology fingerprinting and information disclosure.
@@ -54,9 +57,10 @@ public class SecurityHeadersMiddleware
         "SourceMap"
     ];
 
-    public SecurityHeadersMiddleware(RequestDelegate next)
+    public SecurityHeadersMiddleware(RequestDelegate next, PageTemplateHelper pageTemplateHelper)
     {
         _next = next;
+        _govUkFrontendCspHashes = pageTemplateHelper.GetCspScriptHashes();
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -92,10 +96,13 @@ public class SecurityHeadersMiddleware
 
             if (!headers.ContainsKey("Content-Security-Policy"))
             {
+                // Allow GOV.UK Frontend inline scripts (js-enabled script and init script)
+                // These scripts are part of _GovUkPageTemplate and are required for GOV.UK Frontend to function
+                // CSP hashes are computed dynamically from PageTemplateHelper
                 headers.Append("Content-Security-Policy",
                     "default-src 'self'; " +
                     "style-src 'self'; " +
-                    "script-src 'self'; " +
+                    $"script-src 'self' {_govUkFrontendCspHashes}; " +
                     "img-src 'self' data:; " +
                     "font-src 'self' data:; " +
                     "form-action 'self'; " +

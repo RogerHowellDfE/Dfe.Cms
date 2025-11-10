@@ -101,6 +101,29 @@ public class SecurityHeadersTests : IClassFixture<AdminWebApplicationFactory>
     }
 
     /// <summary>
+    /// Validates Content-Security-Policy includes computed hashes for GOV.UK Frontend inline scripts.
+    /// This ensures the js-enabled and init scripts from _GovUkPageTemplate can execute.
+    /// </summary>
+    [Fact]
+    public async Task HomePage_WhenRequested_CspIncludesGovUkFrontendScriptHashes()
+    {
+        var response = await _client.GetAsync("/");
+
+        Assert.True(response.Headers.Contains("Content-Security-Policy"));
+        var csp = response.Headers.GetValues("Content-Security-Policy").First();
+
+        // Verify CSP contains script-src directive
+        Assert.Contains("script-src", csp);
+
+        // Verify CSP contains hash markers (sha256- prefix indicates hash-based allowlisting)
+        Assert.Contains("sha256-", csp);
+
+        // Verify there are at least two hashes (js-enabled script + init script)
+        var hashCount = csp.Split("sha256-").Length - 1;
+        Assert.True(hashCount >= 2, $"Expected at least 2 script hashes in CSP, found {hashCount}");
+    }
+
+    /// <summary>
     /// Validates Strict-Transport-Security header enforces HTTPS.
     /// Per OWASP: Forces browsers to use HTTPS for all future requests.
     /// </summary>
