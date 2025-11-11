@@ -21,7 +21,7 @@
     <PackageVersion Include="GovUk.Frontend.AspNetCore" Version="3.4.1" />
 
     <!-- ASP.NET Core Testing -->
-    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.10" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.11" />
 
     <!-- Testing frameworks -->
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
