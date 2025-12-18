@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "sass": "1.96.0",
-    "esbuild": "0.27.1"
+    "esbuild": "0.27.2"
   },
   "type": "module"
 }
