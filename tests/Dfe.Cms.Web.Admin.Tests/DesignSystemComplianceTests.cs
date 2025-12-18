@@ -184,7 +184,7 @@ public class DesignSystemComplianceTests : IClassFixture<AdminWebApplicationFact
 
         // Should contain reference to DfE rebrand logo (with or without version hash)
         // Pattern matches: /assets/images/department-for-education_white.png or with hash like .abc123.png
-        // Note: .NET 9's MapStaticAssets() (see Dfe.Cms.Web.Admin.Program) automatically adds
+        // Note: .NET's MapStaticAssets() (see Dfe.Cms.Web.Admin.Program) automatically adds
         // content-addressable hashes to all static assets, even without asp-append-version="true"
         var hasRebrandLogo = Regex.IsMatch(content, @"/assets/images/department-for-education_white(\.[a-z0-9]+)?\.png", RegexOptions.IgnoreCase);
 
