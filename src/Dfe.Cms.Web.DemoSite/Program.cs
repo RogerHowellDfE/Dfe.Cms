@@ -30,6 +30,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Enable GOV.UK Frontend asset hosting (fonts, images, JS, CSS)
+app.UseGovUkFrontend();
+
 app.UseRouting();
 
 app.UseAuthorization();

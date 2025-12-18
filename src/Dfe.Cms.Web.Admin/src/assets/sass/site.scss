@@ -1,5 +1,12 @@
 // Set the assets path for GOV.UK Frontend
-$govuk-assets-path: "/_content/GovUk.Frontend.AspNetCore/";
+// UseGovUkFrontend() middleware serves assets at /assets/
+$govuk-assets-path: "/assets/";
+
+// Use Helvetica or Arial instead of GDS Transport
+// Services not on service.gov.uk should use alternative typefaces like Helvetica or Arial
+// See: https://design-system.service.gov.uk/styles/typeface/
+$govuk-font-family: Helvetica, Arial, sans-serif;
+$govuk-include-font-face: false;
 
 // Import GOV.UK Frontend - this includes all styles, components, and utilities
 @import "govuk-frontend/dist/govuk/all";
